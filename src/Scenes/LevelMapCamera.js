@@ -1,4 +1,4 @@
-export default class LevelMapCamera extends Phaser.Scene {
+class LevelMapCamera extends Phaser.Scene {
     constructor() {
         super("LevelMapCamera");
         this.scrollActive = true;
