@@ -17,7 +17,7 @@ export default class LevelMapCamera extends Phaser.Scene {
         // initial offsets
         const offsetY = 0;
         const offsetXA = 0;
-        const offsetXB = this.mapA.widthInPixels;
+        const offsetXB = this.mapA.widthInPixels * this.scaleFactor;
 
         // dupes layer set
         this.layersA = this.createLayerSet(this.mapA, tilesetA, offsetXA, offsetY);
