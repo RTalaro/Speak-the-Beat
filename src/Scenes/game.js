@@ -178,6 +178,12 @@ class Game extends Phaser.Scene {
             this.ratingText.setVisible(true);
             this.finalMessage.setVisible(true);
 
+            //credit start
+            this.input.keyboard.once('keydown-SPACE', () => {
+            this.scene.stop();
+            this.scene.start('Credits');
+        });
+
             return;
         }
 
