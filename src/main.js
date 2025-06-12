@@ -2,8 +2,6 @@
 // debug
 "use strict"
 
-import './Scenes/LevelSelectScene.js';
-
 let config = {
     parent: 'phaser-game',
     type: Phaser.CANVAS,
