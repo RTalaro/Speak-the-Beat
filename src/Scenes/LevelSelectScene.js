@@ -1,7 +1,6 @@
 class LevelSelectScene extends Phaser.Scene {
     constructor() {
         super('LevelSelect');
-        // Example charts (replace with your own)
         this.charts = [
             {
                 name: "testing (delete later)",
@@ -42,9 +41,14 @@ class LevelSelectScene extends Phaser.Scene {
         this.selected = 0;
 
         this.charts.forEach((level, idx) => {
+            let fillColor = '#fff';  // default color
+            if (idx === this.selected) {
+                fillColor = '#ff0';
+            }
+
             let txt = this.add.text(centerX, centerY + idx * 60, level.name, {
                 fontSize: '32px',
-                fill: idx === this.selected ? '#ff0' : '#fff'
+                fill: fillColor
             }).setOrigin(0.5)
             .setInteractive({ useHandCursor: true })
             .on('pointerover', () => {
