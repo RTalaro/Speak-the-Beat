@@ -53,19 +53,19 @@ class Face extends Phaser.Scene {
         }
         if(text == "Happy"){
             this.person.face.destroy();
-            this.person.face = this.add.sprite(this.game.config.width*2/3, this.game.config.height/2, "face_happy");
+            this.person.face = this.add.sprite(this.game.config.width*2/3 + 300, this.game.config.height/2 + 300, "face_happy");
             this.typewriteText(this.dialogue[num+1], num+1);
             return;
         }
         else if(text == "Angry"){
             this.person.face.destroy();
-            this.person.face = this.add.sprite(this.game.config.width*2/3, this.game.config.height/2, "face_mad");
+            this.person.face = this.add.sprite(this.game.config.width*2/3 + 300, this.game.config.height/2 + 300, "face_mad");
             this.typewriteText(this.dialogue[num+1], num+1);
             return;
         }
         else if(text == "Sad"){
             this.person.face.destroy();
-            this.person.face = this.add.sprite(this.game.config.width*2/3, this.game.config.height/2, "face_sad");
+            this.person.face = this.add.sprite(this.game.config.width*2/3 + 300, this.game.config.height/2 + 300, "face_sad");
             this.typewriteText(this.dialogue[num+1], num+1);
             return;
         }
