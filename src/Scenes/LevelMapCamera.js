@@ -6,7 +6,7 @@ class LevelMapCamera extends Phaser.Scene {
         this.scaleFactor = 1.9;
     }
 
-    create() {
+    create(data) {
         // loads 2 copies of the same map, so they connect smoothly
         this.mapA = this.make.tilemap({ key: "levelMap" });
         this.mapB = this.make.tilemap({ key: "levelMap" });
@@ -37,7 +37,7 @@ class LevelMapCamera extends Phaser.Scene {
             }
         });
 
-        this.scene.launch("Game");
+        this.scene.launch("Game", data);
         this.scene.launch("Face");
     }
 

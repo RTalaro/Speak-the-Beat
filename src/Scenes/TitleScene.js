@@ -14,14 +14,34 @@ class TitleScene extends Phaser.Scene {
 
         this.add.image(centerX, centerY, 'title').setOrigin(0.5);
 
-        this.add.text(centerX, centerY + 150, 'Press SPACE to start', {
-            fontSize: '24px',
-            fill: '#ffffff',
-        }).setOrigin(0.5);
-
-        this.input.keyboard.once('keydown-SPACE', () => {
+        // Start Button
+        const startBtn = this.add.text(centerX, centerY + 100, 'Start', {
+            fontSize: '36px',
+            fill: '#fff',
+            backgroundColor: '#222',
+            padding: { left: 30, right: 30, top: 10, bottom: 10 }
+        }).setOrigin(0.5)
+        .setInteractive({ useHandCursor: true })
+        .on('pointerover', function() { this.setStyle({ fill: '#ff0' }); })
+        .on('pointerout', function() { this.setStyle({ fill: '#fff' }); })
+        .on('pointerdown', () => {
             this.scene.stop();
-            this.scene.start('loadScene');
+            this.scene.start('LevelSelect');
+        });
+
+        // Credits Button
+        const creditsBtn = this.add.text(centerX, centerY + 170, 'Credits', {
+            fontSize: '36px',
+            fill: '#fff',
+            backgroundColor: '#222',
+            padding: { left: 30, right: 30, top: 10, bottom: 10 }
+        }).setOrigin(0.5)
+        .setInteractive({ useHandCursor: true })
+        .on('pointerover', function() { this.setStyle({ fill: '#ff0' }); })
+        .on('pointerout', function() { this.setStyle({ fill: '#fff' }); })
+        .on('pointerdown', () => {
+            this.scene.stop();
+            this.scene.start('Credits');
         });
     }
 }

@@ -5,7 +5,7 @@ class Game extends Phaser.Scene {
         // build note track
         // slash means it continues on the next line
         // track with speed: 900 L R - 300 - L 500 R
-        this.chart = (this.config && config.chart) || "D U - - - - - - - - - D U D U - - R - - L - - R L R - L R - L R - L R \
+        this.defaultChart = "D U - - - - - - - - - D U D U - - R - - L - - R L R - L R - L R - L R \
                                                         - - - - L - - L - - R - - R - - - - - - - D U D U D U D U - - - - - -\
                                                         - - - - - - - - - - - - - - - - - L - U - U - L - -  - - - - - - - - - - R - - R - \
                                                         R D - D - - - - - - - - - - - - - - - - - D R - L - - - - - - - - - -\
@@ -15,7 +15,8 @@ class Game extends Phaser.Scene {
                                                         - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - U - - - L";
     }
 
-    init() {
+    init(data) {
+        this.chart = data && data.chart ? data.chart : this.defaultChart;
         this.gameOver = false;
     }
 
@@ -24,7 +25,7 @@ class Game extends Phaser.Scene {
         this.bgm.play();
         this.lineY = this.game.config.height / 2;
         this.hitZoneX = 375;
-        this.noteSpeed = 500; // default speed
+        this.noteSpeed = 300; // default speed
 
         this.perfectZone = 40;
         this.goodZone = 120;
@@ -33,6 +34,8 @@ class Game extends Phaser.Scene {
         this.spriteSize = 0.5;
 
         let spacing = 80;
+
+        this.backToTitleBtn = null;
 
         this.directions = [
             { key: 'LEFT',  char: 'L', sprite: "flatDark_left", color: 0xff4444 },
@@ -43,7 +46,7 @@ class Game extends Phaser.Scene {
 
         // add vfx
         this.hit_vfx = this.add.particles(0, 0, "star_01", {
-            scale: {start: .1, end: .25},
+            scale: { start: 1.5, end: 0.5 },
             maxAliveParticles: 1,
             lifespan: 400,
             alpha: {start: 1, end: 0.1}
@@ -96,23 +99,39 @@ class Game extends Phaser.Scene {
         // text
         this.feedback = this.add.text(
             this.hitZoneX, this.game.config.height / 3, '',
-            { font: '64px Arial', fill: '#fff' }
+            { font: '64px', fill: '#fff' }
         ).setOrigin(0.5);
 
         this.comment = this.add.text(
             this.game.config.width / 2, this.lineY + 120, '',
-            { font: '32px Arial', fill: '#fff' }
+            { font: '32px', fill: '#fff' }
         ).setOrigin(0.5).setVisible(false);
 
         this.ratingText = this.add.text(
             this.game.config.width / 2, this.lineY + 120, '',
-            { font: '32px Arial', fill: '#fff' }
+            { font: '32px', fill: '#fff' }
         ).setOrigin(0.5).setVisible(false);
 
         this.finalMessage = this.add.text(
             this.game.config.width / 2, this.game.config.height / 2 + 100, '',
-            { font: '128px Arial', fill: '#fff' }
+            { font: '128px', fill: '#fff' }
         ).setOrigin(0.5).setVisible(false);
+
+        this.redFlash = this.add.rectangle(
+            this.game.config.width / 2, this.game.config.height / 2,
+            this.game.config.width, this.game.config.height,
+            0xff0000, 0.4
+        ).setDepth(100).setAlpha(0);
+
+        this.flashRed = () => {
+            this.redFlash.setAlpha(0.4);
+            this.tweens.add({
+                targets: this.redFlash,
+                alpha: 0,
+                duration: 200,
+                ease: 'Cubic.easeOut'
+            });
+        };
 
         // R to reset game
         this.input.keyboard.on('keydown-R', () => {
@@ -140,11 +159,18 @@ class Game extends Phaser.Scene {
             // Only allow hit if note is in the bad zone
             if (note.active && note.dir.key === key && dist <= this.badZone / 2) {
                 note.active = false;
+
+                const { x, y } = note;
+
                 if (note.sprite) {
                     console.log("hit");
                     note.sprite.destroy();
                 }
-                this.notes.splice(i, 1);
+
+                this.hit_vfx.setPosition(x, y);
+                this.hit_vfx.explode(20);
+
+                this.notes.splice(i,1);
 
                 if (dist <= this.perfectZone / 2) {
                     this.feedback.setText('perfect');
@@ -154,13 +180,14 @@ class Game extends Phaser.Scene {
                     this.score += 0.5;
                 } else {
                     this.feedback.setText('bad');
+                    this.flashRed();
                 }
                 hit = true;
                 break;
             }
         }
         if (!hit) {
-            this.feedback.setText('miss');
+            //this.feedback.setText('miss');
         }
         this.updateRating();
     }
@@ -178,11 +205,26 @@ class Game extends Phaser.Scene {
             this.ratingText.setVisible(true);
             this.finalMessage.setVisible(true);
 
-            //credit start
-            this.input.keyboard.once('keydown-SPACE', () => {
-            this.scene.stop();
-            this.scene.start('Credits');
-        });
+            if (!this.backToTitleBtn) {
+                this.backToTitleBtn = this.add.text(
+                    this.game.config.width / 2,
+                    this.game.config.height / 2 + 150,
+                    'Credits',
+                    {
+                        fontSize: '36px',
+                        fill: '#fff',
+                        backgroundColor: '#222',
+                        padding: { left: 30, right: 30, top: 10, bottom: 10 }
+                    }
+                ).setOrigin(0.5)
+                .setInteractive({ useHandCursor: true })
+                .on('pointerover', function() { this.setStyle({ fill: '#ff0' }); })
+                .on('pointerout', function() { this.setStyle({ fill: '#fff' }); })
+                .on('pointerdown', () => {
+                    this.scene.stop();
+                    this.scene.start('Credits');
+                });
+            }
 
             return;
         }
@@ -208,6 +250,7 @@ class Game extends Phaser.Scene {
                     }
                     this.notes.splice(i, 1);
                     this.feedback.setText('miss');
+                    this.flashRed();
                     this.updateRating();
                 }
             }

@@ -90,6 +90,6 @@ class Load extends Phaser.Scene {
          console.log("start game");
          
          // start the game
-         this.scene.start("LevelMapCamera");
+         this.scene.start("LevelMapCamera", this.scene.settings.data);
     }
 }

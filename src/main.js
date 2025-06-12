@@ -2,6 +2,8 @@
 // debug
 "use strict"
 
+import './Scenes/LevelSelectScene.js';
+
 let config = {
     parent: 'phaser-game',
     type: Phaser.CANVAS,
@@ -11,7 +13,7 @@ let config = {
     width: 1600,
     height: 900,
     fps: { forceSetTimeOut: true, target: 60},
-    scene: [TitleScene, Load, LevelMapCamera, Game, Face, CreditScene],
+    scene: [TitleScene, LevelSelectScene, Load, LevelMapCamera, Game, Face, CreditScene],
     backgroundColor: '#000000'
 }
 

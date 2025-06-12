@@ -11,8 +11,8 @@ class Face extends Phaser.Scene {
 
     create(){
         this.person = {};
-        this.person.body = this.add.sprite(this.game.config.width*2/3, this.game.config.height/2, "body_circle");
-        this.person.face = this.add.sprite(this.game.config.width*2/3, this.game.config.height/2, "face_happy");
+        this.person.body = this.add.sprite(this.game.config.width*2/3 + 300, this.game.config.height/2 + 300, "body_circle");
+        this.person.face = this.add.sprite(this.game.config.width*2/3 + 300, this.game.config.height/2 + 300, "face_happy");
         this.bubble = this.add.sprite(this.person.body.x, this.person.body.y-200, "text_bubble").setScale(10);
         this.bubble.visible = false;
         this.dialogue = ["Since we're walking to Safeway,                do you      want anything?",
