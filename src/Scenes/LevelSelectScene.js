@@ -3,16 +3,12 @@ class LevelSelectScene extends Phaser.Scene {
         super('LevelSelect');
         this.charts = [
             {
-                name: "testing (delete later)",
-                chart: "1000 L"
-            },
-            {
                 name: "Easy",
                 chart: "200 - L - - - L - L - - - R - R - R - R - - U - - D - - U U - - D D - L - R - U - D"
             },
             {
                 name: "Medium",
-                chart: "300 - L - R - U - D - L - R - U - D - - - - L L - R R - L L - U U - - L R - D U - - D D D D - U U U U"
+                chart: "350 - L - R - U - D - L - R - U - D - - - - L L - R R - L L - U U - - L R - D U - - D D D D - U U U U"
             },
             {
                 name: "Hard",
@@ -41,7 +37,7 @@ class LevelSelectScene extends Phaser.Scene {
         this.selected = 0;
 
         this.charts.forEach((level, idx) => {
-            let fillColor = '#fff';  // default color
+            let fillColor = '#fff';
             if (idx === this.selected) {
                 fillColor = '#ff0';
             }

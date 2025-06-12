@@ -135,7 +135,7 @@ class Game extends Phaser.Scene {
 
         // R to reset game
         this.input.keyboard.on('keydown-R', () => {
-            this.bgm.destroy();   // uncomment once there is a bgm loaded
+            this.bgm.destroy();
             this.scene.start("LevelMapCamera");
         }, this);
 
